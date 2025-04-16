@@ -3,7 +3,7 @@ const axios = require('axios');
 module.exports = async (req, res) => {
   const { story } = req.body;
   const token = process.env.GITHUB_TOKEN;
-  const repo = 'your-username/open-source-novel';
+  const repo = 'hstottdev/open-source-novel';
   const path = 'data/story-data.json';
 
   try {
