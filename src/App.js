@@ -14,7 +14,7 @@ function App() {
   }, []);
 
   const fetchStory = async () => {
-    const response = await axios.get('https://raw.githubusercontent.com/hstottdev/open-source-novel/refs/heads/main/data/story-data.json');
+    const response = await axios.get('https://raw.githubusercontent.com/hstottdev/open-source-novel/main/data/story-data.json');
     setStory(response.data);
     setContributors(response.data.map(entry => entry.name));
   };
@@ -27,7 +27,14 @@ function App() {
 
     const existingEntry = story.find(entry => entry.ip === ip && entry.date === today);
     if (existingEntry) {
-      setMessage(`You have already submitted a word today: ${existingEntry.word} as ${existingEntry.name}`);
+      setMessage(`You have already submitted a word today: '${existingEntry.word}' as '${existingEntry.name}'. Please come back tomorrow!`);
+      //return;
+    }
+
+    const multipleWords = word.split(" ").length > 1;
+    const overCharacterLimit = word.length > 25;
+    if(multipleWords || overCharacterLimit){
+      setMessage(`The word '${word}' is invalid: Words must not include spaces and be no more than 25 characters.`);
       return;
     }
 
@@ -39,9 +46,9 @@ function App() {
     if (updateResponse.status === 200) {
       setStory(updatedStory);
       setContributors(updatedStory.map(entry => entry.name));
-      setMessage('Your word has been added to the story!');
+      setMessage(`Your word '${word}' has been added to the story!`);
     } else {
-      setMessage('Failed to update the story. Please try again.');
+      setMessage("We're having issues updating the story. Please try again later.");
     }
   };
 
